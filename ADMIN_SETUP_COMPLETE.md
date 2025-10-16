@@ -279,7 +279,7 @@ components/admin/
 
 Both servers running:
 - ✅ Frontend: http://localhost:3002
-- ✅ Backend: http://localhost:5000
+- ✅ Backend: https://jobaccord.onrender.com
 - ✅ Admin Panel: http://localhost:3002/admin
 - ✅ Main Application: http://localhost:3002
 

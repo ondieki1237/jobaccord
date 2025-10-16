@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     // Submit to backend server
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://jobaccord.onrender.com'
     
     const response = await fetch(`${backendUrl}/api/applications/submit`, {
       method: 'POST',

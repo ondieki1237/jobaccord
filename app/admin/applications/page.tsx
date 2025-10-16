@@ -53,7 +53,7 @@ export default function ApplicationsListPage() {
   const fetchApplications = async () => {
     try {
       setIsLoading(true)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://jobaccord.onrender.com"
       const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: "10",
