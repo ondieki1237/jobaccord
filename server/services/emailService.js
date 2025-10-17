@@ -2,20 +2,26 @@ const nodemailer = require('nodemailer');
 
 // Create reusable transporter
 const createTransporter = () => {
+  const port = parseInt(process.env.EMAIL_PORT || '587');
+  
   return nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_PORT == 465, // true for 465, false for other ports
+    port: port,
+    secure: port === 465, // true for 465 (SSL), false for 587 (STARTTLS)
+    requireTLS: port === 587, // Force TLS for port 587
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
-    connectionTimeout: 10000, // 10 seconds
-    greetingTimeout: 5000, // 5 seconds
-    socketTimeout: 10000, // 10 seconds
+    connectionTimeout: 15000, // 15 seconds
+    greetingTimeout: 10000, // 10 seconds
+    socketTimeout: 15000, // 15 seconds
     tls: {
-      rejectUnauthorized: false // Accept self-signed certificates
-    }
+      rejectUnauthorized: false, // Accept self-signed certificates
+      ciphers: 'SSLv3' // Support older TLS versions if needed
+    },
+    debug: process.env.NODE_ENV === 'development', // Enable debug in development
+    logger: process.env.NODE_ENV === 'development' // Enable logger in development
   });
 };
 
