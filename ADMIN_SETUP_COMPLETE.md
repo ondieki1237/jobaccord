@@ -279,7 +279,7 @@ components/admin/
 
 Both servers running:
 - ✅ Frontend: http://localhost:3002
-- ✅ Backend: https://jobaccord.onrender.com
+- ✅ Backend: https://api.codewithseth.co.ke
 - ✅ Admin Panel: http://localhost:3002/admin
 - ✅ Main Application: http://localhost:3002
 

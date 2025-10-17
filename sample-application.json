@@ -1,0 +1,38 @@
+{
+  "fullName": "Jane Doe",
+  "email": "janedoe@example.com",
+  "phone": "+254729115000",
+  "location": "Nairobi, Kenya",
+  "eligibleToWork": "yes",
+  "hasDegree": "yes",
+  "degreeDetails": "BSc Biomedical Engineering, University of Nairobi",
+  "yearsExperience": "5",
+  "hasSupervised": "yes",
+  "leadershipDescription": "Led a team of 8 sales reps for 2 years.",
+  "equipmentExperience": "Handled installation and sales of MRI, CT, and X-ray machines.",
+  "majorSaleDescription": "Closed a KES 10M deal with Kenyatta Hospital.",
+  "strengths": [
+    "Sales strategy & negotiation",
+    "Client relationship management",
+    "Team leadership"
+  ],
+  "crmProficiency": "4",
+  "trainingExample": "Trained new hires on CRM and product demos.",
+  "motivation": "Driven by results and client satisfaction.",
+  "hadSalesTarget": "yes",
+  "targetPerformance": "Achieved 120% of annual target in 2024.",
+  "teamMotivation": "Organized monthly team-building and recognition events.",
+  "leadershipStyle": "Collaborative and goal-oriented.",
+  "challenges": "Managing client expectations and tight deadlines.",
+  "difficultClients": "Listen, empathize, and offer solutions.",
+  "crossDepartment": "Worked with logistics and finance to deliver urgent orders.",
+  "whyJoin": "Accord Medical is a leader in innovation and client care.",
+  "availableStart": "2025-11-01",
+  "cvLink": "https://example.com/jane-doe-cv.pdf",
+  "achievementsLink": "https://example.com/jane-doe-awards.pdf",
+  "additionalDetails": "Open to relocation and travel.",
+  "additionalDocuments": [
+    { "label": "Recommendation Letter", "url": "https://example.com/recommendation.pdf" },
+    { "label": "Portfolio", "url": "https://example.com/portfolio.pdf" }
+  ]
+}

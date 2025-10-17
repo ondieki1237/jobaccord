@@ -2,13 +2,13 @@
 
 # Test API Health Check
 echo "🔍 Testing API Health..."
-curl -s https://jobaccord.onrender.com/api/health | json_pp
+curl -s https://api.codewithseth.co.ke/api/health | json_pp
 
 echo -e "\n\n"
 
 # Test Application Statistics (requires login first)
 echo "🔐 Testing Admin Login..."
-TOKEN=$(curl -s -X POST https://jobaccord.onrender.com/api/auth/login \
+TOKEN=$(curl -s -X POST https://api.codewithseth.co.ke/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "customerservice@accordmedical.co.ke",
@@ -26,14 +26,14 @@ echo -e "\n\n"
 
 # Get Statistics
 echo "📊 Getting Application Statistics..."
-curl -s https://jobaccord.onrender.com/api/applications/statistics \
+curl -s https://api.codewithseth.co.ke/api/applications/statistics \
   -H "Authorization: Bearer $TOKEN" | json_pp
 
 echo -e "\n\n"
 
 # Get All Applications
 echo "📋 Getting All Applications..."
-curl -s "https://jobaccord.onrender.com/api/applications?limit=5" \
+curl -s "https://api.codewithseth.co.ke/api/applications?limit=5" \
   -H "Authorization: Bearer $TOKEN" | json_pp
 
 echo -e "\n\n✅ API Test Complete!"

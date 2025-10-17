@@ -1,0 +1,38 @@
+{
+  "_comment": "Minimal JSON - Only Required Fields",
+  
+  "fullName": "John Doe",
+  "email": "john.doe@example.com",
+  "phone": "+254712345678",
+  "location": "Nairobi, Kenya",
+  "eligibleToWork": "yes",
+  "cvLink": "https://drive.google.com/file/d/123abc/view",
+  
+  "hasDegree": "",
+  "degreeDetails": "",
+  "yearsExperience": "",
+  "hasSupervised": "",
+  "leadershipDescription": "",
+  "equipmentExperience": "",
+  "majorSaleDescription": "",
+  "strengths": [],
+  "crmProficiency": "3",
+  "trainingExample": "",
+  "motivation": "",
+  "hadSalesTarget": "",
+  "targetPerformance": "",
+  "teamMotivation": "",
+  "leadershipStyle": "",
+  "challenges": "",
+  "difficultClients": "",
+  "crossDepartment": "",
+  "whyJoin": "",
+  "availableStart": "",
+  "achievementsLink": "",
+  "additionalDetails": "",
+  "additionalDocuments": [
+    { "label": "", "url": "" },
+    { "label": "", "url": "" },
+    { "label": "", "url": "" }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "_comment": "Complete Job Application JSON Template",
+  "_required_fields": ["fullName", "email", "phone", "location", "eligibleToWork", "cvLink"],
+  
+  "fullName": "Jane Doe",
+  "email": "janedoe@example.com",
+  "phone": "+254729115000",
+  "location": "Nairobi, Kenya",
+  "eligibleToWork": "yes",
+  
+  "hasDegree": "yes",
+  "degreeDetails": "BSc Biomedical Engineering, University of Nairobi",
+  "yearsExperience": "2-3",
+  "hasSupervised": "yes",
+  "leadershipDescription": "Led a team of 8 sales representatives for 2 years in medical equipment sales, achieving team targets consistently.",
+  "equipmentExperience": "Extensive experience with MRI machines, CT scanners, X-ray equipment, ultrasound machines, and patient monitoring systems.",
+  "majorSaleDescription": "Successfully closed a KES 10M deal with Kenyatta Hospital for advanced imaging equipment suite including installation and training.",
+  
+  "strengths": [
+    "Sales strategy & negotiation",
+    "Client relationship management",
+    "Team leadership"
+  ],
+  "crmProficiency": "4",
+  "trainingExample": "Developed and delivered comprehensive training programs for 15+ new sales representatives on CRM systems, product demonstrations, and customer engagement strategies.",
+  "motivation": "Passionate about improving healthcare delivery through innovative medical technology. Driven by results and building lasting client relationships in the healthcare sector.",
+  
+  "hadSalesTarget": "yes",
+  "targetPerformance": "Consistently exceeded annual sales targets - achieved 120% of KES 50M target in 2024, with Q4 performance at 135%.",
+  "teamMotivation": "Implemented monthly team-building activities, recognition programs, and mentorship initiatives. Created transparent goal-tracking system that boosted team morale and performance.",
+  "leadershipStyle": "Collaborative and goal-oriented leadership style. I believe in empowering team members through clear communication, providing resources, and celebrating wins together.",
+  "challenges": "Successfully managed complex procurement timelines in hospital settings, navigating budget constraints while maintaining strong client relationships during challenging economic periods.",
+  
+  "difficultClients": "I approach difficult situations by listening actively to understand underlying concerns, empathizing with their position, and collaborating on tailored solutions that address their specific needs while maintaining professional boundaries.",
+  "crossDepartment": "Regularly collaborate with logistics for timely equipment delivery, finance for flexible payment solutions, technical teams for installation support, and customer service for post-sale maintenance.",
+  "whyJoin": "Accord Medical is recognized as East Africa's leader in medical equipment innovation and exceptional client care. I'm excited about the opportunity to contribute to a company that shares my values of healthcare excellence and continuous improvement.",
+  "availableStart": "2025-11-01",
+  
+  "cvLink": "https://drive.google.com/file/d/1abc123xyz789/view",
+  "achievementsLink": "https://drive.google.com/file/d/1awards001/view",
+  "additionalDetails": "Open to relocation within Kenya and East Africa. Willing to travel extensively for client visits. Hold valid passport and driver's license. Fluent in English and Kiswahili.",
+  
+  "additionalDocuments": [
+    {
+      "label": "Recommendation Letter - Previous Employer",
+      "url": "https://drive.google.com/file/d/1recommendation001/view"
+    },
+    {
+      "label": "Sales Portfolio & Case Studies",
+      "url": "https://drive.google.com/file/d/1portfolio001/view"
+    },
+    {
+      "label": "Professional Certifications",
+      "url": "https://drive.google.com/file/d/1certifications001/view"
+    }
+  ]
+}

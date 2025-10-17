@@ -18,7 +18,7 @@ Your job application system is now fully configured with:
 - **Status**: ✅ Running
 
 ### Backend (Express API)
-- **URL**: https://jobaccord.onrender.com
+- **URL**: https://api.codewithseth.co.ke
 - **Status**: ✅ Running
 - **Database**: ✅ Connected to MongoDB Atlas
 
@@ -117,14 +117,14 @@ npm run server:dev
 
 **Login**
 ```bash
-curl -X POST https://jobaccord.onrender.com/api/auth/login \
+curl -X POST https://api.codewithseth.co.ke/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"customerservice@accordmedical.co.ke","password":"customer2026"}'
 ```
 
 **Get All Applications** (requires token)
 ```bash
-curl https://jobaccord.onrender.com/api/applications \
+curl https://api.codewithseth.co.ke/api/applications \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -195,7 +195,7 @@ RATE_LIMIT_MAX=100
 
 ### `.env.local` (Frontend - Root Directory)
 ```env
-NEXT_PUBLIC_API_URL=https://jobaccord.onrender.com
+NEXT_PUBLIC_API_URL=https://api.codewithseth.co.ke
 ```
 
 ---
@@ -306,7 +306,7 @@ Create an admin panel to:
 
 - **Backend API**: See `/server/README.md`
 - **Project Structure**: See main README.md
-- **API Endpoints**: https://jobaccord.onrender.com/ (root shows all endpoints)
+- **API Endpoints**: https://api.codewithseth.co.ke/ (root shows all endpoints)
 
 ---
 
@@ -320,7 +320,7 @@ npm run create-admin
 npm run dev:all
 
 # Check backend health
-curl https://jobaccord.onrender.com/api/health
+curl https://api.codewithseth.co.ke/api/health
 
 # View MongoDB logs
 npm run server:dev  # Watch terminal output
