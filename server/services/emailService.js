@@ -189,10 +189,14 @@ const sendApplicationConfirmation = async (applicationData) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent successfully:', info.messageId);
+    console.log('✅ Confirmation email sent successfully to:', applicationData.email);
+    console.log('   Message ID:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Email sending error:', error);
+    console.error('❌ Confirmation email sending error:');
+    console.error('   To:', applicationData.email);
+    console.error('   Error:', error.message);
+    console.error('   Stack:', error.stack);
     return { success: false, error: error.message };
   }
 };
@@ -334,10 +338,14 @@ const sendAdminNotification = async (applicationData) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Admin notification sent:', info.messageId);
+    console.log('✅ Admin notification sent successfully to:', process.env.ADMIN_EMAIL);
+    console.log('   Message ID:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Admin notification error:', error);
+    console.error('❌ Admin notification email error:');
+    console.error('   To:', process.env.ADMIN_EMAIL);
+    console.error('   Error:', error.message);
+    console.error('   Stack:', error.stack);
     return { success: false, error: error.message };
   }
 };

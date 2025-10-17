@@ -28,6 +28,9 @@ exports.submitApplication = async (req, res) => {
       submittedAt: new Date(),
     });
 
+    console.log('📝 Application created:', applicationId);
+    console.log('📧 Sending confirmation email to:', formData.email);
+
     // Send confirmation email to applicant
     const emailResult = await sendApplicationConfirmation({
       ...formData,
@@ -35,12 +38,17 @@ exports.submitApplication = async (req, res) => {
       submittedAt: application.submittedAt,
     });
 
+    console.log('📧 Email result:', emailResult);
+
     // Send notification to admin
-    await sendAdminNotification({
+    console.log('📧 Sending admin notification...');
+    const adminEmailResult = await sendAdminNotification({
       ...formData,
       applicationId,
       submittedAt: application.submittedAt,
     });
+
+    console.log('📧 Admin email result:', adminEmailResult);
 
     res.status(201).json({
       success: true,
