@@ -105,8 +105,8 @@ export default function AdminLoginPage() {
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              <p>Default credentials:</p>
-              <p className="font-mono text-xs mt-1">customerservice@accordmedical.co.ke</p>
+              <p>Build By:</p>
+              <p className="font-mono text-xs mt-1">S.M.O</p>
             </div>
           </CardContent>
         </Card>
