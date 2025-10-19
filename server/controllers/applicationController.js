@@ -57,6 +57,7 @@ exports.submitApplication = async (req, res) => {
         applicationId,
         email: application.email,
         emailSent: emailResult.success,
+        adminNotified: adminEmailResult.success,
       },
     });
   } catch (error) {

@@ -206,53 +206,150 @@ const sendAdminNotification = async (applicationData) => {
   try {
     const transporter = createTransporter();
 
+    // Get notification emails (support multiple recipients)
+    const notificationEmails = process.env.NOTIFICATION_EMAILS || process.env.ADMIN_EMAIL;
+    const hrEmail = process.env.HR_EMAIL || process.env.EMAIL_USER;
+
     const mailOptions = {
       from: process.env.EMAIL_FROM,
-      to: process.env.ADMIN_EMAIL,
-      subject: `New Application: ${applicationData.fullName} - Technical Sales Supervisor`,
+      to: notificationEmails, // Primary recipients
+      cc: hrEmail !== notificationEmails ? hrEmail : undefined, // CC HR if different
+      subject: `🔔 New Application: ${applicationData.fullName} - Technical Sales Supervisor`,
       html: `
 <!DOCTYPE html>
 <html>
 <head>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
-      color: #333;
+      color: #1f2937;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
     }
     .container {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 20px;
+      max-width: 750px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
     }
     .header {
-      background: #dc2626;
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
       color: white;
-      padding: 20px;
+      padding: 30px;
       text-align: center;
     }
+    .header h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    .header p {
+      margin: 8px 0 0 0;
+      opacity: 0.95;
+      font-size: 1.05rem;
+    }
+    .alert {
+      background: #fef3c7;
+      border-left: 5px solid #f59e0b;
+      padding: 15px 20px;
+      margin: 20px;
+      border-radius: 6px;
+    }
+    .alert strong {
+      color: #92400e;
+      display: block;
+      margin-bottom: 5px;
+    }
     .content {
-      background: #f9fafb;
-      padding: 20px;
-      border: 1px solid #e5e7eb;
+      padding: 20px 30px;
     }
     .section {
-      background: white;
-      padding: 15px;
-      margin: 15px 0;
-      border-left: 4px solid #2563eb;
+      background: #f9fafb;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 5px solid #2563eb;
+      border-radius: 8px;
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #1e40af;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
+      background: white;
+      border-radius: 6px;
+      overflow: hidden;
     }
-    td {
-      padding: 8px;
+    tr {
       border-bottom: 1px solid #e5e7eb;
     }
+    tr:last-child {
+      border-bottom: none;
+    }
+    td {
+      padding: 12px 15px;
+    }
     .label {
-      font-weight: bold;
-      width: 200px;
+      font-weight: 600;
+      width: 180px;
+      color: #4b5563;
+    }
+    .value {
+      color: #1f2937;
+    }
+    .button {
+      display: inline-block;
+      background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+      color: white;
+      padding: 14px 32px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 10px 0;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .button:hover {
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    }
+    .footer {
+      background: #f9fafb;
+      padding: 20px 30px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.9rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .badge-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .highlight {
+      background: #dbeafe;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      color: #1e40af;
     }
   </style>
 </head>
@@ -260,76 +357,169 @@ const sendAdminNotification = async (applicationData) => {
   <div class="container">
     <div class="header">
       <h2>🆕 New Job Application Received</h2>
+      <p>Technical Sales Supervisor - Biomedical Division</p>
+    </div>
+    
+    <div class="alert">
+      <strong>⏰ Action Required</strong>
+      A new application has been submitted and requires your review. Please review and update the status in the admin dashboard.
     </div>
     
     <div class="content">
       <div class="section">
-        <h3>Applicant Information</h3>
+        <h3>👤 Applicant Information</h3>
         <table>
           <tr>
             <td class="label">Application ID:</td>
-            <td>${applicationData.applicationId}</td>
+            <td class="value"><span class="highlight">${applicationData.applicationId}</span></td>
           </tr>
           <tr>
             <td class="label">Full Name:</td>
-            <td>${applicationData.fullName}</td>
+            <td class="value"><strong>${applicationData.fullName}</strong></td>
           </tr>
           <tr>
             <td class="label">Email:</td>
-            <td>${applicationData.email}</td>
+            <td class="value"><a href="mailto:${applicationData.email}">${applicationData.email}</a></td>
           </tr>
           <tr>
             <td class="label">Phone:</td>
-            <td>${applicationData.phone}</td>
+            <td class="value"><a href="tel:${applicationData.phone}">${applicationData.phone}</a></td>
           </tr>
           <tr>
             <td class="label">Location:</td>
-            <td>${applicationData.location}</td>
+            <td class="value">${applicationData.location}</td>
           </tr>
           <tr>
-            <td class="label">Eligible to Work:</td>
-            <td>${applicationData.eligibleToWork === 'yes' ? '✅ Yes' : '❌ No'}</td>
+            <td class="label">Work Eligibility:</td>
+            <td class="value">
+              ${applicationData.eligibleToWork === 'yes' 
+                ? '<span class="badge badge-success">✅ Eligible to Work</span>' 
+                : '<span class="badge badge-warning">❌ Not Eligible</span>'}
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Submitted:</td>
+            <td class="value">${new Date(applicationData.submittedAt).toLocaleString('en-KE', { 
+              dateStyle: 'full', 
+              timeStyle: 'short',
+              timeZone: 'Africa/Nairobi'
+            })}</td>
           </tr>
         </table>
       </div>
       
       <div class="section">
-        <h3>Experience</h3>
+        <h3>🎓 Education & Experience</h3>
         <table>
           <tr>
-            <td class="label">Has Degree:</td>
-            <td>${applicationData.hasDegree === 'yes' ? 'Yes' : 'No'}</td>
+            <td class="label">Degree:</td>
+            <td class="value">${applicationData.hasDegree === 'yes' 
+              ? '<span class="badge badge-success">✅ Has Degree</span>' 
+              : '<span class="badge badge-warning">No Degree</span>'}</td>
           </tr>
+          ${applicationData.degreeDetails ? `
           <tr>
             <td class="label">Degree Details:</td>
-            <td>${applicationData.degreeDetails || 'N/A'}</td>
-          </tr>
+            <td class="value">${applicationData.degreeDetails}</td>
+          </tr>` : ''}
           <tr>
             <td class="label">Years of Experience:</td>
-            <td>${applicationData.yearsExperience || 'N/A'}</td>
+            <td class="value"><strong>${applicationData.yearsExperience || 'Not specified'}</strong></td>
           </tr>
           <tr>
-            <td class="label">Has Supervised:</td>
-            <td>${applicationData.hasSupervised === 'yes' ? 'Yes' : 'No'}</td>
+            <td class="label">Supervisory Experience:</td>
+            <td class="value">${applicationData.hasSupervised === 'yes' 
+              ? '<span class="badge badge-success">✅ Has Supervised Teams</span>' 
+              : 'No supervisory experience'}</td>
           </tr>
+          ${applicationData.leadershipDescription ? `
+          <tr>
+            <td class="label">Leadership Details:</td>
+            <td class="value">${applicationData.leadershipDescription}</td>
+          </tr>` : ''}
           <tr>
             <td class="label">CRM Proficiency:</td>
-            <td>${applicationData.crmProficiency}/5</td>
+            <td class="value"><strong>${applicationData.crmProficiency || '3'}/5</strong> ⭐</td>
           </tr>
         </table>
       </div>
+
+      ${applicationData.strengths && applicationData.strengths.length > 0 ? `
+      <div class="section">
+        <h3>💪 Key Strengths</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+          ${applicationData.strengths.map(strength => 
+            `<span class="badge badge-success">${strength}</span>`
+          ).join('')}
+        </div>
+      </div>` : ''}
+
+      ${applicationData.equipmentExperience || applicationData.majorSaleDescription ? `
+      <div class="section">
+        <h3>🏆 Experience Highlights</h3>
+        <table>
+          ${applicationData.equipmentExperience ? `
+          <tr>
+            <td class="label">Equipment Experience:</td>
+            <td class="value">${applicationData.equipmentExperience}</td>
+          </tr>` : ''}
+          ${applicationData.majorSaleDescription ? `
+          <tr>
+            <td class="label">Major Sale Achievement:</td>
+            <td class="value">${applicationData.majorSaleDescription}</td>
+          </tr>` : ''}
+        </table>
+      </div>` : ''}
       
       <div class="section">
-        <h3>Documents</h3>
-        <p><strong>CV/Resume:</strong> <a href="${applicationData.cvLink}">View CV</a></p>
-        ${applicationData.achievementsLink ? `<p><strong>Achievements:</strong> <a href="${applicationData.achievementsLink}">View Achievements</a></p>` : ''}
+        <h3>📎 Documents</h3>
+        <table>
+          <tr>
+            <td class="label">CV/Resume:</td>
+            <td class="value">
+              <a href="${applicationData.cvLink}" class="button" style="padding: 10px 24px; font-size: 0.95rem;">
+                📄 View CV/Resume
+              </a>
+            </td>
+          </tr>
+          ${applicationData.achievementsLink ? `
+          <tr>
+            <td class="label">Achievements:</td>
+            <td class="value">
+              <a href="${applicationData.achievementsLink}" class="button" style="padding: 10px 24px; font-size: 0.95rem;">
+                🏆 View Achievements
+              </a>
+            </td>
+          </tr>` : ''}
+          ${applicationData.additionalDocuments && applicationData.additionalDocuments.length > 0 ? 
+            applicationData.additionalDocuments.filter(doc => doc.label && doc.url).map(doc => `
+          <tr>
+            <td class="label">${doc.label}:</td>
+            <td class="value">
+              <a href="${doc.url}" style="color: #2563eb; text-decoration: none;">📎 View Document</a>
+            </td>
+          </tr>`).join('') : ''}
+        </table>
       </div>
       
-      <div class="section">
-        <h3>Quick Actions</h3>
-        <p>Review this application in your admin dashboard.</p>
-        <p><strong>Submitted:</strong> ${new Date(applicationData.submittedAt).toLocaleString()}</p>
+      <div class="section" style="text-align: center; background: #eff6ff; border-left-color: #2563eb;">
+        <h3 style="color: #1e40af;">⚡ Quick Actions</h3>
+        <p style="margin: 15px 0;">Review this application in your admin dashboard to update its status and add notes.</p>
+        <a href="http://localhost:3002/admin/applications" class="button">
+          🔍 Review in Admin Dashboard
+        </a>
+        <p style="margin-top: 15px; font-size: 0.9rem; color: #6b7280;">
+          Or search for Application ID: <strong>${applicationData.applicationId}</strong>
+        </p>
       </div>
+    </div>
+    
+    <div class="footer">
+      <p><strong>Accord Medical Supplies Ltd</strong> - HR Department</p>
+      <p>© ${new Date().getFullYear()} Accord Medical Supplies Ltd. All rights reserved.</p>
+      <p style="margin-top: 10px; font-size: 0.85rem;">
+        This is an automated notification. Emails sent to: ${notificationEmails}
+      </p>
     </div>
   </div>
 </body>
@@ -338,12 +528,16 @@ const sendAdminNotification = async (applicationData) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Admin notification sent successfully to:', process.env.ADMIN_EMAIL);
+    console.log('✅ Admin notification sent successfully');
+    console.log('   To:', notificationEmails);
+    if (hrEmail && hrEmail !== notificationEmails) {
+      console.log('   CC:', hrEmail);
+    }
     console.log('   Message ID:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Admin notification email error:');
-    console.error('   To:', process.env.ADMIN_EMAIL);
+    console.error('   To:', process.env.NOTIFICATION_EMAILS || process.env.ADMIN_EMAIL);
     console.error('   Error:', error.message);
     console.error('   Stack:', error.stack);
     return { success: false, error: error.message };
