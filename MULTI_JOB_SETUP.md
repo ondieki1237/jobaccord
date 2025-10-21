@@ -154,10 +154,10 @@ PATCH /api/jobs/:id/reopen
 
 ```bash
 # Get all open jobs (no auth needed)
-curl http://localhost:5000/api/jobs/open
+curl https://api.codewithseth.co.ke/api/jobs/open
 
 # Get job statistics (requires auth)
-curl http://localhost:5000/api/jobs/statistics \
+curl https://api.codewithseth.co.ke/api/jobs/statistics \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 

@@ -7,7 +7,7 @@ cd /home/seth/Documents/ACCORD/jobaccord/server
 node server.js
 ```
 
-Server should be running at: `http://localhost:5000`
+Server should be running at: `https://api.codewithseth.co.ke`
 
 ---
 
@@ -15,7 +15,7 @@ Server should be running at: `http://localhost:5000`
 
 ### Endpoint
 ```
-POST http://localhost:5000/api/applications/submit
+POST https://api.codewithseth.co.ke/api/applications/submit
 ```
 
 ### Headers
@@ -99,7 +99,7 @@ After submitting, check your terminal where the server is running. You should se
 ## Troubleshooting
 
 ### "Route not found"
-- Make sure you're using: `POST http://localhost:5000/api/applications/submit`
+- Make sure you're using: `POST https://api.codewithseth.co.ke/api/applications/submit`
 - Not: `/api/applications` or `/api/submit-application`
 
 ### "Missing required field"
@@ -122,19 +122,19 @@ After submitting, check your terminal where the server is running. You should se
 
 ### Get All Applications (Admin)
 ```
-GET http://localhost:5000/api/applications
+GET https://api.codewithseth.co.ke/api/applications
 Headers: Authorization: Bearer <JWT_TOKEN>
 ```
 
 ### Get Application by ID (Admin)
 ```
-GET http://localhost:5000/api/applications/:id
+GET https://api.codewithseth.co.ke/api/applications/:id
 Headers: Authorization: Bearer <JWT_TOKEN>
 ```
 
 ### Admin Login
 ```
-POST http://localhost:5000/api/auth/login
+POST https://api.codewithseth.co.ke/api/auth/login
 Body:
 {
   "email": "humanresource@accordmedical.co.ke",

@@ -16,7 +16,7 @@ echo ""
 
 # API Configuration
 API_URL="http://localhost:3002/api/submit-application"
-# For production, use: API_URL="http://localhost:5000/api/applications/submit"
+# For production, use: API_URL="https://api.codewithseth.co.ke/api/applications/submit"
 
 echo -e "${YELLOW}Testing API:${NC} $API_URL"
 echo ""

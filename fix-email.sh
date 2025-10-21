@@ -30,10 +30,10 @@ fi
 
 # Create or update .env.local for frontend
 echo "📝 Configuring frontend to use local backend..."
-echo "NEXT_PUBLIC_API_URL=http://localhost:5000" > .env.local
+echo "NEXT_PUBLIC_API_URL=https://api.codewithseth.co.ke" > .env.local
 
 # Check if backend server is already running
-if curl -s http://localhost:5000/api/health > /dev/null 2>&1; then
+if curl -s https://api.codewithseth.co.ke/api/health > /dev/null 2>&1; then
     echo "✅ Backend server is already running on port 5000"
 else
     echo "🚀 Starting backend server..."

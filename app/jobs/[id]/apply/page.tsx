@@ -30,7 +30,7 @@ export default function JobApplicationPage() {
     try {
       setIsLoading(true)
       setError(null)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs/${params.id}/public`)
       
       if (!response.ok) {

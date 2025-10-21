@@ -59,7 +59,7 @@ cd /home/seth/Documents/code/jobaccord && npm run dev:all
 
 1. **Check backend is running:**
    ```bash
-   curl http://localhost:5000/api/health
+   curl https://api.codewithseth.co.ke/api/health
    ```
    Should return: `{"success":true,"message":"Server is running",...}`
 
@@ -183,7 +183,7 @@ When working correctly:
 
 3. **Check backend is using correct port:**
    ```bash
-   curl http://localhost:5000/api/health
+   curl https://api.codewithseth.co.ke/api/health
    ```
 
 4. **View detailed error logs:**
@@ -215,7 +215,7 @@ Update environment variables on Render dashboard with new SMTP settings.
 
 ## ✅ Success Checklist
 
-- [ ] Backend server running: `http://localhost:5000/api/health` responds
+- [ ] Backend server running: `https://api.codewithseth.co.ke/api/health` responds
 - [ ] Frontend server running: `http://localhost:3002` accessible
 - [ ] Email test passes: `npm run test-email` shows success
 - [ ] Test application submitted

@@ -32,7 +32,7 @@
 The issue is that **the backend Express server is NOT running on your local machine**.
 
 **Evidence:**
-- `curl http://localhost:5000/api/health` - No response (server not running)
+- `curl https://api.codewithseth.co.ke/api/health` - No response (server not running)
 - `ps aux | grep node server/server.js` - No process found
 - Email configuration test works perfectly
 - Application saves to MongoDB (production server)
@@ -50,7 +50,7 @@ POST /api/submit-application
    ↓
 Next.js API Route validates
    ↓
-Forwards to → http://localhost:5000/api/applications/submit
+Forwards to → https://api.codewithseth.co.ke/api/applications/submit
    ↓
 [PRODUCTION SERVER ON RENDER]
    ↓
@@ -93,13 +93,13 @@ npm run server
 
 Edit `.env.local` (create if doesn't exist):
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=https://api.codewithseth.co.ke
 ```
 
 #### Step 3: Test
 ```bash
 # In new terminal, test the endpoint
-curl http://localhost:5000/api/health
+curl https://api.codewithseth.co.ke/api/health
 
 # Should return:
 # {"success":true,"message":"Server is running","timestamp":"..."}
@@ -186,12 +186,12 @@ npm run dev:all
 
 # This runs:
 # - Frontend: http://localhost:3002
-# - Backend: http://localhost:5000
+# - Backend: https://api.codewithseth.co.ke
 ```
 
 Update `.env.local`:
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=https://api.codewithseth.co.ke
 ```
 
 ---
@@ -223,12 +223,12 @@ npm run test-email
 
 ### Test Backend Health:
 ```bash
-curl http://localhost:5000/api/health
+curl https://api.codewithseth.co.ke/api/health
 ```
 
 ### Test Application Submission:
 ```bash
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "Test User",
@@ -260,7 +260,7 @@ curl -X POST http://localhost:5000/api/applications/submit \
 - [ ] Backend server is running (`npm run server:dev`)
 - [ ] Frontend is running (`npm run dev`)
 - [ ] Environment variable `NEXT_PUBLIC_API_URL` points to local backend
-- [ ] Health endpoint responds: `http://localhost:5000/api/health`
+- [ ] Health endpoint responds: `https://api.codewithseth.co.ke/api/health`
 - [ ] Email test passes: `npm run test-email`
 - [ ] Submit test application through UI
 - [ ] Check email received in inbox (including spam folder)

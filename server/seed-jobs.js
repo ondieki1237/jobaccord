@@ -35,7 +35,7 @@ const sampleJobs = [
     description: 'Lead our technical sales team in the biomedical equipment sector. This role requires a combination of technical knowledge and sales expertise to drive revenue growth and maintain customer relationships.',
     qualifications: `
 • Bachelor's degree in Biomedical Engineering, Sales, or related field
-• Minimum 5 years of experience in technical sales, preferably in medical equipment
+• Minimum  years of 3 experience in technical sales, preferably in medical equipment
 • Proven track record of meeting or exceeding sales targets
 • Strong leadership and team management skills
 • Excellent communication and presentation skills

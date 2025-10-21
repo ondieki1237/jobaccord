@@ -39,7 +39,7 @@ export default function NewJobPage() {
     setIsSubmitting(true)
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs`, {
         method: "POST",
         headers: {

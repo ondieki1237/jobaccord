@@ -71,7 +71,7 @@ npm run server:dev
 cd /home/seth/Documents/code/jobaccord
 
 # Simple curl test
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "Test User",
@@ -191,13 +191,13 @@ npm run test-email
 
 ### Test 2: Check Server Health
 ```bash
-curl http://localhost:5000/api/health
+curl https://api.codewithseth.co.ke/api/health
 ```
 **Expected:** `{"success":true,"message":"Server is running"}`
 
 ### Test 3: Submit Test Application
 ```bash
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "Test User",
@@ -269,7 +269,7 @@ npm run server:dev
 # Terminal 2: Test Submission
 cd /home/seth/Documents/code/jobaccord
 sleep 3  # Wait for server to start
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d @application-minimal.json
 
@@ -283,7 +283,7 @@ curl -X POST http://localhost:5000/api/applications/submit \
 
 - [ ] Server is running (`npm run server:dev`)
 - [ ] No suspended processes (`fg` and Ctrl+C to clear)
-- [ ] Health check responds: `curl http://localhost:5000/api/health`
+- [ ] Health check responds: `curl https://api.codewithseth.co.ke/api/health`
 - [ ] Test email works: `npm run test-email` shows success
 - [ ] Environment variables are correct: `cat .env | grep EMAIL`
 - [ ] MongoDB is connected (check server logs)
@@ -340,7 +340,7 @@ Please run this and share the output:
 npm run server:dev
 
 # In Terminal 2
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "Debug Test",

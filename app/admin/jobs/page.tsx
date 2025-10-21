@@ -46,7 +46,7 @@ export default function JobsAdminPage() {
   const fetchJobs = async () => {
     try {
       setIsLoading(true)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export default function JobsAdminPage() {
 
   const fetchStatistics = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs/statistics`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ export default function JobsAdminPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs/${id}`, {
         method: "DELETE",
         headers: {
@@ -103,7 +103,7 @@ export default function JobsAdminPage() {
 
   const handleClose = async (id: string) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs/${id}/close`, {
         method: "PATCH",
         headers: {
@@ -122,7 +122,7 @@ export default function JobsAdminPage() {
 
   const handleReopen = async (id: string) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
       const response = await fetch(`${apiUrl}/api/jobs/${id}/reopen`, {
         method: "PATCH",
         headers: {

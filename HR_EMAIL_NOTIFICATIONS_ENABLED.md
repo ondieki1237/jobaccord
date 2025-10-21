@@ -128,7 +128,7 @@ npm run server:dev
 
 ### **Test 2: Submit a Test Application**
 ```bash
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "Test Applicant",
@@ -314,7 +314,7 @@ The system is now fully configured to send notifications to HR and admin on ever
 npm run server:dev
 
 # Terminal 2: Submit test (or use the form at localhost:3002)
-curl -X POST http://localhost:5000/api/applications/submit \
+curl -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d @application-template.json
 ```

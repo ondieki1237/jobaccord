@@ -13,7 +13,7 @@ sleep 3
 echo "Submitting test application..."
 echo ""
 
-response=$(curl -s -X POST http://localhost:5000/api/applications/submit \
+response=$(curl -s -X POST https://api.codewithseth.co.ke/api/applications/submit \
   -H "Content-Type: application/json" \
   -d '{
     "fullName": "Email Test User",

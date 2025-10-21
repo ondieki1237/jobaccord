@@ -10,7 +10,7 @@ POST /api/submit-application
 
 **Full URLs:**
 - **Local Development**: `http://localhost:3002/api/submit-application`
-- **Production Backend**: `http://localhost:5000/api/applications/submit`
+- **Production Backend**: `https://api.codewithseth.co.ke/api/applications/submit`
 
 ---
 
@@ -54,7 +54,7 @@ POST /api/submit-application
   ↓
 Validates required fields
   ↓
-Forwards to → http://localhost:5000/api/applications/submit
+Forwards to → https://api.codewithseth.co.ke/api/applications/submit
   ↓
 Backend processes and saves to MongoDB
   ↓
