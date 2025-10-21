@@ -59,7 +59,7 @@ export default function AdminDashboard() {
 
   const fetchStatistics = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const response = await fetch(`${apiUrl}/api/applications/statistics`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
       case "pending":
         return "bg-yellow-100 text-yellow-800"
       case "reviewed":
-        return "bg-blue-100 text-blue-800"
+        return "text-white"
       case "shortlisted":
         return "bg-green-100 text-green-800"
       case "rejected":
@@ -240,7 +240,12 @@ export default function AdminDashboard() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <h4 className="font-semibold">{app.fullName}</h4>
-                          <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                          <Badge 
+                            className={getStatusColor(app.status)}
+                            style={app.status === 'reviewed' ? { backgroundColor: '#00abec' } : {}}
+                          >
+                            {app.status}
+                          </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">{app.email}</p>
                         <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">

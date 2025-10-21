@@ -68,7 +68,12 @@ const STEPS = [
   { id: 6, title: "Attachments", description: "Documents and proof of achievements" },
 ]
 
-export default function JobApplicationForm() {
+interface JobApplicationFormProps {
+  jobId?: string
+  jobTitle?: string
+}
+
+export default function JobApplicationForm({ jobId, jobTitle }: JobApplicationFormProps) {
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -130,12 +135,19 @@ export default function JobApplicationForm() {
     setIsSubmitting(true)
 
     try {
+      // Add jobId and jobTitle to the submission data
+      const submissionData = {
+        ...formData,
+        jobId: jobId || "",
+        jobTitle: jobTitle || "Technical Sales Supervisor"
+      }
+
       const response = await fetch("/api/submit-application", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       })
 
       if (response.ok) {

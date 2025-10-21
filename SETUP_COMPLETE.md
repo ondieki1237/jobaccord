@@ -18,7 +18,7 @@ Your job application system is now fully configured with:
 - **Status**: ✅ Running
 
 ### Backend (Express API)
-- **URL**: https://api.codewithseth.co.ke
+- **URL**: http://localhost:5000
 - **Status**: ✅ Running
 - **Database**: ✅ Connected to MongoDB Atlas
 
@@ -117,14 +117,14 @@ npm run server:dev
 
 **Login**
 ```bash
-curl -X POST https://api.codewithseth.co.ke/api/auth/login \
+curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"customerservice@accordmedical.co.ke","password":"customer2026"}'
 ```
 
 **Get All Applications** (requires token)
 ```bash
-curl https://api.codewithseth.co.ke/api/applications \
+curl http://localhost:5000/api/applications \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -195,7 +195,7 @@ RATE_LIMIT_MAX=100
 
 ### `.env.local` (Frontend - Root Directory)
 ```env
-NEXT_PUBLIC_API_URL=https://api.codewithseth.co.ke
+NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
 ---
@@ -306,7 +306,7 @@ Create an admin panel to:
 
 - **Backend API**: See `/server/README.md`
 - **Project Structure**: See main README.md
-- **API Endpoints**: https://api.codewithseth.co.ke/ (root shows all endpoints)
+- **API Endpoints**: http://localhost:5000/ (root shows all endpoints)
 
 ---
 
@@ -320,7 +320,7 @@ npm run create-admin
 npm run dev:all
 
 # Check backend health
-curl https://api.codewithseth.co.ke/api/health
+curl http://localhost:5000/api/health
 
 # View MongoDB logs
 npm run server:dev  # Watch terminal output

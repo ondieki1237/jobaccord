@@ -8,6 +8,7 @@ const { apiLimiter } = require('./middleware/rateLimiter');
 // Import routes
 const applicationRoutes = require('./routes/applicationRoutes');
 const authRoutes = require('./routes/authRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/', apiLimiter);
 // Routes
 app.use('/api/applications', applicationRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -52,10 +54,11 @@ app.get('/', (req, res) => {
   res.json({
     success: true,
     message: 'Accord Medical Job Application API',
-    version: '1.0.0',
+    version: '2.0.0',
     endpoints: {
       applications: '/api/applications',
       auth: '/api/auth',
+      jobs: '/api/jobs',
       health: '/api/health',
     },
   });

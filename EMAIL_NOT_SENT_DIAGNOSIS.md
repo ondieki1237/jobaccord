@@ -50,7 +50,7 @@ POST /api/submit-application
    ↓
 Next.js API Route validates
    ↓
-Forwards to → https://api.codewithseth.co.ke/api/applications/submit
+Forwards to → http://localhost:5000/api/applications/submit
    ↓
 [PRODUCTION SERVER ON RENDER]
    ↓

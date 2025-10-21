@@ -97,7 +97,7 @@ export default function ApplicationDetailPage() {
   const fetchApplication = async () => {
     try {
       setIsLoading(true)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const response = await fetch(`${apiUrl}/api/applications/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ export default function ApplicationDetailPage() {
   const handleUpdate = async () => {
     try {
       setIsSaving(true)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const response = await fetch(`${apiUrl}/api/applications/${id}`, {
         method: "PUT",
         headers: {

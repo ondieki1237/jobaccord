@@ -53,7 +53,7 @@ export default function ApplicationsListPage() {
   const fetchApplications = async () => {
     try {
       setIsLoading(true)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
       const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: "10",
@@ -87,7 +87,7 @@ export default function ApplicationsListPage() {
       case "pending":
         return "bg-yellow-100 text-yellow-800"
       case "reviewed":
-        return "bg-blue-100 text-blue-800"
+        return "text-white"
       case "shortlisted":
         return "bg-green-100 text-green-800"
       case "rejected":
@@ -245,7 +245,12 @@ export default function ApplicationsListPage() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                            <Badge 
+                              className={getStatusColor(app.status)}
+                              style={app.status === 'reviewed' ? { backgroundColor: '#00abec' } : {}}
+                            >
+                              {app.status}
+                            </Badge>
                           </TableCell>
                           <TableCell className="text-right">
                             <Link href={`/admin/applications/${app._id}`}>
@@ -271,7 +276,12 @@ export default function ApplicationsListPage() {
                             <h3 className="font-semibold">{app.fullName}</h3>
                             <p className="text-xs text-muted-foreground font-mono mt-1">{app.applicationId}</p>
                           </div>
-                          <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                          <Badge 
+                            className={getStatusColor(app.status)}
+                            style={app.status === 'reviewed' ? { backgroundColor: '#00abec' } : {}}
+                          >
+                            {app.status}
+                          </Badge>
                         </div>
 
                         <div className="space-y-2 text-sm mb-4">
