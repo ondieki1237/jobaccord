@@ -104,12 +104,31 @@ export default function JobDetailPage() {
   }
 
   const handleApply = () => {
-    // Check if this is the Technical Sales Supervisor position
-    if (job?.title === "Technical Sales Supervisor") {
-      // Redirect to the existing multi-step form
+    // Create job slug from title
+    const jobSlug = job?.title
+      ?.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '') || ''
+    
+    // Map job titles to their specific application routes
+    const jobRoutes: Record<string, string> = {
+      'technical-sales-supervisor': '/apply/technical-sales-supervisor',
+      'social-media-marketing-intern': '/apply/social-media-intern',
+      'customer-service-representative': '/apply/customer-service-representative',
+      'accountant': '/apply/accountant',
+      'it-support-specialist': '/apply/it-support-specialist',
+      'human-resources-officer': '/apply/human-resources-officer',
+      'credit-control-officer': '/apply/credit-control-officer',
+    }
+
+    // Check if job has a dedicated route, otherwise use dynamic route
+    if (jobRoutes[jobSlug]) {
+      router.push(jobRoutes[jobSlug])
+    } else if (job?.title === "Technical Sales Supervisor") {
+      // Fallback: Use the complex multi-step form for Technical Sales
       router.push(`/jobs/${params.id}/apply`)
     } else {
-      // For other jobs, redirect to a simple form (to be created later)
+      // Fallback: Use simple form for other jobs
       router.push(`/jobs/${params.id}/apply-simple`)
     }
   }

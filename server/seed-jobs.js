@@ -169,6 +169,38 @@ const sampleJobs = [
     salary: 'Ksh 55,000 - 75,000 per month',
     status: 'open',
   },
+  {
+    title: 'Credit Control Officer',
+    department: 'Accounts',
+    description: 'Support the Accounts team in managing and maintaining the company\'s credit portfolio by ensuring clients adhere to agreed payment terms, monitoring outstanding accounts, and minimizing overdue debts. This is a 6-month contract role (renewable based on performance) focused on credit monitoring, debt follow-up, and client communication to safeguard healthy cash flow and maintain professionalism in all engagements.',
+    qualifications: `
+• Diploma or Degree in Finance, Accounting, Business Administration, or a related field
+• Minimum 1 year (up to 2 years preferred) continuous experience in credit control, debt collection, or a finance-related role
+• Sound understanding of credit management principles and financial reporting
+• Proficiency in MS Excel; knowledge of accounting/ERP systems such as QuickBooks, Sage, or SAP is an advantage
+• Excellent communication and negotiation skills
+• Strong analytical ability and attention to detail
+• Time-management and organizational skills
+• Integrity, accountability, and confidentiality in handling information
+• Must be available to start immediately
+    `.trim(),
+    responsibilities: `
+• Monitor assigned customer accounts to identify overdue payments and potential credit risks
+• Conduct follow-ups with clients through calls, emails, and, when necessary, approved field visits
+• Maintain accurate and up-to-date records of customer balances and payment commitments
+• Review and update customer credit files and limits according to company policy
+• Prepare weekly and monthly debtors' reports, including debt collected per month
+• Liaise with the sales and accounts teams to resolve credit-related queries
+• Handle debt recovery tactfully to maintain positive client relationships
+• Flag high-risk accounts and recommend action plans
+• Support implementation and improvement of credit control procedures
+    `.trim(),
+    location: 'Nairobi',
+    employmentType: 'contract',
+    deadline: new Date('2025-10-30'),
+    salary: 'Competitive + Transport & Communication Allowance',
+    status: 'open',
+  },
 ];
 
 async function seedJobs() {

@@ -9,6 +9,7 @@ const { apiLimiter } = require('./middleware/rateLimiter');
 const applicationRoutes = require('./routes/applicationRoutes');
 const authRoutes = require('./routes/authRoutes');
 const jobRoutes = require('./routes/jobRoutes');
+const creditControlApplicationRoutes = require('./routes/creditControlApplicationRoutes');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/api/', apiLimiter);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/credit-control-applications', creditControlApplicationRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
