@@ -112,7 +112,7 @@ export default function CreditControlOfficerApplicationPage() {
         employmentType: "Contract (6 months, renewable)",
       }
 
-      const response = await fetch("/api/submit-application", {
+      const response = await fetch("/api/submit-credit-control-application", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,13 +4,20 @@ const applicationSchema = new mongoose.Schema(
   {
     // Job Reference
     jobId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Job',
-      required: [true, 'Job ID is required'],
+      type: String,
+      required: false,
     },
     jobTitle: {
       type: String,
       required: [true, 'Job title is required'],
+    },
+    department: {
+      type: String,
+      trim: true,
+    },
+    employmentType: {
+      type: String,
+      trim: true,
     },
     // Basic Information
     fullName: {
@@ -37,8 +44,78 @@ const applicationSchema = new mongoose.Schema(
     },
     eligibleToWork: {
       type: String,
-      required: [true, 'Work eligibility is required'],
       enum: ['yes', 'no'],
+    },
+
+    // Credit Control Officer specific fields
+    highestQualification: {
+      type: String,
+      trim: true,
+    },
+    fieldOfStudy: {
+      type: String,
+      trim: true,
+    },
+    experienceDescription: {
+      type: String,
+      trim: true,
+    },
+    debtCollected: {
+      type: String,
+      trim: true,
+    },
+    collectionStrategies: {
+      type: String,
+      trim: true,
+    },
+    financeSystems: {
+      type: String,
+      trim: true,
+    },
+    excelProficiency: {
+      type: String,
+      trim: true,
+    },
+    comfortableWithCalls: {
+      type: String,
+      enum: ['yes', 'no', ''],
+    },
+    willingToReport: {
+      type: String,
+      enum: ['yes', 'no', ''],
+    },
+    currentSalary: {
+      type: String,
+      trim: true,
+    },
+    expectedSalary: {
+      type: String,
+      trim: true,
+    },
+    availableImmediately: {
+      type: String,
+      enum: ['yes', 'no', ''],
+    },
+    earliestStartDate: {
+      type: String,
+      trim: true,
+    },
+    coverLetterLink: {
+      type: String,
+      trim: true,
+    },
+    credentialsLink: {
+      type: String,
+      trim: true,
+    },
+    confirmAccuracy: {
+      type: Boolean,
+    },
+    understandContractTerms: {
+      type: Boolean,
+    },
+    noConflictOfInterest: {
+      type: Boolean,
     },
 
     // Experience & Background

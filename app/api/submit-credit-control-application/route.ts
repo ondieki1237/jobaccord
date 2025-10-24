@@ -10,28 +10,11 @@ export async function POST(request: Request) {
       "email", 
       "phone", 
       "location",
-      "highestQualification",
-      "fieldOfStudy",
-      "yearsExperience",
-      "experienceDescription",
-      "debtCollected",
-      "collectionStrategies",
-      "financeSystems",
-      "excelProficiency",
-      "comfortableWithCalls",
-      "willingToReport",
-      "currentSalary",
-      "expectedSalary",
-      "availableImmediately",
       "cvLink",
-      "coverLetterLink",
-      "confirmAccuracy",
-      "understandContractTerms",
-      "noConflictOfInterest"
     ]
 
     for (const field of requiredFields) {
-      if (!formData[field] && formData[field] !== false) {
+      if (!formData[field]) {
         return NextResponse.json({ error: `Missing required field: ${field}` }, { status: 400 })
       }
     }
@@ -42,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
     }
 
-    // Validate experience requirement
+    // Validate experience requirement (if provided)
     if (formData.yearsExperience === 'less-than-1') {
       return NextResponse.json(
         { error: "This position requires at least 1 year of experience" }, 
@@ -50,10 +33,15 @@ export async function POST(request: Request) {
       )
     }
 
-    // Submit to backend server - separate endpoint for credit control
+    // Add eligibleToWork if not present (for compatibility)
+    if (!formData.eligibleToWork) {
+      formData.eligibleToWork = 'yes'
+    }
+
+    // Submit to backend server - use the regular applications endpoint
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.codewithseth.co.ke'
     
-    const response = await fetch(`${backendUrl}/api/credit-control-applications/submit`, {
+    const response = await fetch(`${backendUrl}/api/applications/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

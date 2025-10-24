@@ -7,7 +7,7 @@ exports.submitApplication = async (req, res) => {
     const formData = req.body;
 
     // Validate required fields
-    const requiredFields = ['fullName', 'email', 'phone', 'location', 'eligibleToWork', 'cvLink'];
+    const requiredFields = ['fullName', 'email', 'phone', 'location', 'cvLink'];
     
     for (const field of requiredFields) {
       if (!formData[field]) {
