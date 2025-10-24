@@ -120,10 +120,13 @@ export default function CreditControlOfficerApplicationPage() {
         body: JSON.stringify(submissionData),
       })
 
+      const result = await response.json()
+
       if (response.ok) {
         setShowSuccess(true)
       } else {
-        alert("There was an error submitting your application. Please try again.")
+        console.error("Application submission failed:", result)
+        alert(`Error: ${result.error || "There was an error submitting your application. Please try again."}`)
       }
     } catch (error) {
       console.error("Submission error:", error)

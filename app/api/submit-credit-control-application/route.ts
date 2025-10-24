@@ -4,6 +4,13 @@ export async function POST(request: Request) {
   try {
     const formData = await request.json()
 
+    console.log('📝 Credit Control Application received:', {
+      fullName: formData.fullName,
+      email: formData.email,
+      jobId: formData.jobId,
+      jobTitle: formData.jobTitle
+    })
+
     // Validate required fields for Credit Control Officer
     const requiredFields = [
       "fullName", 
@@ -15,6 +22,7 @@ export async function POST(request: Request) {
 
     for (const field of requiredFields) {
       if (!formData[field]) {
+        console.error(`❌ Missing required field: ${field}`)
         return NextResponse.json({ error: `Missing required field: ${field}` }, { status: 400 })
       }
     }
@@ -22,11 +30,13 @@ export async function POST(request: Request) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
+      console.error('❌ Invalid email format:', formData.email)
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
     }
 
     // Validate experience requirement (if provided)
     if (formData.yearsExperience === 'less-than-1') {
+      console.error('❌ Insufficient experience')
       return NextResponse.json(
         { error: "This position requires at least 1 year of experience" }, 
         { status: 400 }
@@ -41,6 +51,8 @@ export async function POST(request: Request) {
     // Submit to backend server - use the regular applications endpoint
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.codewithseth.co.ke'
     
+    console.log('🚀 Submitting to backend:', `${backendUrl}/api/applications/submit`)
+
     const response = await fetch(`${backendUrl}/api/applications/submit`, {
       method: 'POST',
       headers: {
@@ -51,16 +63,26 @@ export async function POST(request: Request) {
 
     const result = await response.json()
 
+    console.log('📥 Backend response:', {
+      status: response.status,
+      ok: response.ok,
+      success: result.success,
+      message: result.message,
+      error: result.error
+    })
+
     if (!response.ok) {
+      console.error('❌ Backend error:', result)
       return NextResponse.json(
         { 
           success: false,
-          error: result.error || "Failed to submit application" 
+          error: result.error || result.details || "Failed to submit application" 
         },
         { status: response.status }
       )
     }
 
+    console.log('✅ Application submitted successfully')
     return NextResponse.json(
       {
         success: true,
@@ -71,11 +93,11 @@ export async function POST(request: Request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error("Error processing credit control application:", error)
+    console.error("❌ Error processing credit control application:", error)
     return NextResponse.json(
       { 
         success: false,
-        error: "Failed to process application. Please try again later." 
+        error: error instanceof Error ? error.message : "Failed to process application. Please try again later." 
       },
       { status: 500 }
     )
