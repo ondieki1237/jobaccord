@@ -3,6 +3,9 @@ const { sendApplicationConfirmation, sendAdminNotification } = require('../servi
 
 // Submit a new application
 exports.submitApplication = async (req, res) => {
+  console.log('🔵 Application submission started');
+  console.log('📦 Request body received:', Object.keys(req.body));
+  
   try {
     const formData = req.body;
 
@@ -29,37 +32,44 @@ exports.submitApplication = async (req, res) => {
     });
 
     console.log('📝 Application created:', applicationId);
-    console.log('📧 Sending confirmation email to:', formData.email);
 
-    // Send confirmation email to applicant
-    const emailResult = await sendApplicationConfirmation({
-      ...formData,
-      applicationId,
-      submittedAt: application.submittedAt,
-    });
-
-    console.log('📧 Email result:', emailResult);
-
-    // Send notification to admin
-    console.log('📧 Sending admin notification...');
-    const adminEmailResult = await sendAdminNotification({
-      ...formData,
-      applicationId,
-      submittedAt: application.submittedAt,
-    });
-
-    console.log('📧 Admin email result:', adminEmailResult);
-
+    // Return immediately - send emails asynchronously in background
     res.status(201).json({
       success: true,
       message: 'Application submitted successfully',
       data: {
         applicationId,
         email: application.email,
-        emailSent: emailResult.success,
-        adminNotified: adminEmailResult.success,
+        emailSent: 'pending',
+        adminNotified: 'pending',
       },
     });
+
+    // Send emails in background (non-blocking)
+    console.log('📧 Starting background email tasks...');
+    
+    // Send confirmation email to applicant (background)
+    sendApplicationConfirmation({
+      ...formData,
+      applicationId,
+      submittedAt: application.submittedAt,
+    }).then(result => {
+      console.log('📧 Email sent:', result);
+    }).catch(err => {
+      console.error('📧 Email error:', err.message);
+    });
+
+    // Send notification to admin (background)
+    sendAdminNotification({
+      ...formData,
+      applicationId,
+      submittedAt: application.submittedAt,
+    }).then(result => {
+      console.log('📧 Admin email sent:', result);
+    }).catch(err => {
+      console.error('📧 Admin email error:', err.message);
+    });
+    
   } catch (error) {
     console.error('❌ Application submission error:', error);
     res.status(500).json({
