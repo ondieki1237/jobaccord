@@ -48,12 +48,12 @@ export async function POST(request: Request) {
       formData.eligibleToWork = 'yes'
     }
 
-    // Submit to backend server - use the regular applications endpoint
+    // Submit to backend server - use separate credit control endpoint
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.codewithseth.co.ke'
     
-    console.log('🚀 Submitting to backend:', `${backendUrl}/api/applications/submit`)
+    console.log('🚀 Submitting to backend:', `${backendUrl}/api/credit-control-applications/submit`)
 
-    const response = await fetch(`${backendUrl}/api/applications/submit`, {
+    const response = await fetch(`${backendUrl}/api/credit-control-applications/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
