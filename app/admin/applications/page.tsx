@@ -34,6 +34,7 @@ export default function ApplicationsListPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [jobTypeFilter, setJobTypeFilter] = useState<"all" | "sales" | "credit-control">("all")
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [total, setTotal] = useState(0)
@@ -48,12 +49,24 @@ export default function ApplicationsListPage() {
     if (token) {
       fetchApplications()
     }
-  }, [token, statusFilter, currentPage])
+  }, [token, statusFilter, jobTypeFilter, currentPage])
 
   const fetchApplications = async () => {
     try {
       setIsLoading(true)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
+      
+      // Determine which endpoint to use based on job type filter
+      let endpoint = ""
+      if (jobTypeFilter === "credit-control") {
+        endpoint = "/api/credit-control-applications"
+      } else if (jobTypeFilter === "sales") {
+        endpoint = "/api/applications"
+      } else {
+        // For "all", we'll fetch both and combine (or default to sales)
+        endpoint = "/api/applications"
+      }
+      
       const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: "10",
@@ -63,7 +76,7 @@ export default function ApplicationsListPage() {
         params.append("status", statusFilter)
       }
 
-      const response = await fetch(`${apiUrl}/api/applications?${params}`, {
+      const response = await fetch(`${apiUrl}${endpoint}?${params}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,7 +139,58 @@ export default function ApplicationsListPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Applications</h1>
-          <p className="text-muted-foreground">Manage job applications for Technical Sales Supervisor position</p>
+          <p className="text-muted-foreground">
+            {jobTypeFilter === "credit-control" 
+              ? "Manage Credit Control Officer applications"
+              : jobTypeFilter === "sales"
+              ? "Manage Technical Sales Supervisor applications"
+              : "Manage all job applications"}
+          </p>
+        </div>
+
+        {/* Job Type Filter Tabs */}
+        <div className="mb-6">
+          <div className="flex gap-2 border-b">
+            <button
+              onClick={() => {
+                setJobTypeFilter("all")
+                setCurrentPage(1)
+              }}
+              className={`px-6 py-3 font-medium transition-colors ${
+                jobTypeFilter === "all"
+                  ? "border-b-2 border-[#00abec] text-[#00abec]"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              All Applications
+            </button>
+            <button
+              onClick={() => {
+                setJobTypeFilter("sales")
+                setCurrentPage(1)
+              }}
+              className={`px-6 py-3 font-medium transition-colors ${
+                jobTypeFilter === "sales"
+                  ? "border-b-2 border-[#00abec] text-[#00abec]"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Technical Sales Supervisor
+            </button>
+            <button
+              onClick={() => {
+                setJobTypeFilter("credit-control")
+                setCurrentPage(1)
+              }}
+              className={`px-6 py-3 font-medium transition-colors ${
+                jobTypeFilter === "credit-control"
+                  ? "border-b-2 border-[#00abec] text-[#00abec]"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Credit Control Officer
+            </button>
+          </div>
         </div>
 
         {/* Filters */}

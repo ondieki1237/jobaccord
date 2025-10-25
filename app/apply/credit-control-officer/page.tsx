@@ -110,6 +110,10 @@ export default function CreditControlOfficerApplicationPage() {
         jobTitle: "Credit Control Officer",
         department: "Accounts",
         employmentType: "Contract (6 months, renewable)",
+        // Map form field names to API expected names
+        confirmAccuracy: formData.consentVerification,
+        understandContractTerms: formData.consentConfidentiality,
+        credentialsLink: formData.additionalInfo || "",
       }
 
       const response = await fetch("/api/submit-credit-control-application", {
