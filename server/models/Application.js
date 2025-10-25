@@ -129,7 +129,7 @@ const applicationSchema = new mongoose.Schema(
     },
     yearsExperience: {
       type: String,
-      enum: ['less-than-1', '1-2', '2-3', 'over-3'],
+      enum: ['less-than-1', '1-2', '2-3', 'over-3', '1-2-years', 'over-2-years'],
     },
     hasSupervised: {
       type: String,
