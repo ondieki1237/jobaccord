@@ -30,10 +30,16 @@ const sendApplicationConfirmation = async (applicationData) => {
   try {
     const transporter = createTransporter();
 
+    // Determine job details based on jobTitle
+    const jobTitle = applicationData.jobTitle || 'Technical Sales Supervisor';
+    const jobDetails = jobTitle === 'Credit Control Officer' 
+      ? 'Accounts Department - 6 Month Contract (Renewable)'
+      : 'Biomedical Division - Nairobi';
+
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to: applicationData.email,
-      subject: 'Application Received - Technical Sales Supervisor Position',
+      subject: `Application Received - ${jobTitle} Position`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -143,7 +149,7 @@ const sendApplicationConfirmation = async (applicationData) => {
     </div>
     <div class="content">
       <p style="font-size:1.1rem;">Dear ${applicationData.fullName},</p>
-      <p>Thank you for your interest in the <strong>Technical Sales Supervisor</strong> position in our Biomedical Division - Nairobi.</p>
+      <p>Thank you for your interest in the <strong>${jobTitle}</strong> position in our ${jobDetails}.</p>
       <div class="application-id">
         📋 Application ID: ${applicationData.applicationId}
       </div>
@@ -158,12 +164,12 @@ const sendApplicationConfirmation = async (applicationData) => {
       </div>
       <div class="info-box">
         <h3>Application Summary</h3>
-        <p><strong>Position:</strong> Technical Sales Supervisor</p>
-        <p><strong>Department:</strong> Biomedical Division</p>
+        <p><strong>Position:</strong> ${jobTitle}</p>
+        <p><strong>Department:</strong> ${jobTitle === 'Credit Control Officer' ? 'Accounts Department' : 'Biomedical Division'}</p>
         <p><strong>Location:</strong> Nairobi, Kenya</p>
         <p><strong>Submitted:</strong> ${new Date(applicationData.submittedAt).toLocaleString()}</p>
         <p><strong>Email:</strong> ${applicationData.email}</p>
-        <p><strong>Phone:</strong> +254 729 115000</p>
+        <p><strong>Phone:</strong> ${applicationData.phone}</p>
       </div>
       <p>If you have any questions, please don't hesitate to contact us at <strong>info@accordmedical.co.ke</strong></p>
       <div style="text-align: center; margin: 30px 0;">
@@ -209,12 +215,14 @@ const sendAdminNotification = async (applicationData) => {
     // Get notification emails (support multiple recipients)
     const notificationEmails = process.env.NOTIFICATION_EMAILS || process.env.ADMIN_EMAIL;
     const hrEmail = process.env.HR_EMAIL || process.env.EMAIL_USER;
+    
+    const jobTitle = applicationData.jobTitle || 'Technical Sales Supervisor';
 
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to: notificationEmails, // Primary recipients
       cc: hrEmail !== notificationEmails ? hrEmail : undefined, // CC HR if different
-      subject: `🔔 New Application: ${applicationData.fullName} - Technical Sales Supervisor`,
+      subject: `🔔 New Application: ${applicationData.fullName} - ${jobTitle}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -357,7 +365,7 @@ const sendAdminNotification = async (applicationData) => {
   <div class="container">
     <div class="header">
       <h2>🆕 New Job Application Received</h2>
-      <p>Technical Sales Supervisor - Biomedical Division</p>
+      <p>${jobTitle} - ${jobTitle === 'Credit Control Officer' ? 'Accounts Department' : 'Biomedical Division'}</p>
     </div>
     
     <div class="alert">
