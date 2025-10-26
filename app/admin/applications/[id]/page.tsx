@@ -30,44 +30,70 @@ import {
   CheckCircle,
   ExternalLink,
   Save,
+  DollarSign,
+  Shield,
 } from "lucide-react"
 import { toast } from "sonner"
 
+// Universal Application interface
 interface Application {
   _id: string
   applicationId: string
+  jobTitle?: string
+  department?: string
+  employmentType?: string
   fullName: string
   email: string
   phone: string
   location: string
-  eligibleToWork: string
-  hasDegree: string
-  degreeDetails: string
   yearsExperience: string
-  hasSupervised: string
-  leadershipDescription: string
-  equipmentExperience: string
-  majorSaleDescription: string
-  strengths: string[]
-  crmProficiency: string
-  trainingExample: string
-  motivation: string
-  hadSalesTarget: string
-  targetPerformance: string
-  teamMotivation: string
-  leadershipStyle: string
-  challenges: string
-  difficultClients: string
-  crossDepartment: string
-  whyJoin: string
-  availableStart: string
   cvLink: string
-  achievementsLink: string
-  additionalDetails: string
-  additionalDocuments: Array<{ label: string; url: string }>
   status: string
   submittedAt: string
   notes?: string
+  // Sales Supervisor specific
+  eligibleToWork?: string
+  hasDegree?: string
+  degreeDetails?: string
+  hasSupervised?: string
+  leadershipDescription?: string
+  equipmentExperience?: string
+  majorSaleDescription?: string
+  strengths?: string[]
+  crmProficiency?: string
+  trainingExample?: string
+  motivation?: string
+  hadSalesTarget?: string
+  targetPerformance?: string
+  teamMotivation?: string
+  leadershipStyle?: string
+  challenges?: string
+  difficultClients?: string
+  crossDepartment?: string
+  whyJoin?: string
+  availableStart?: string
+  achievementsLink?: string
+  additionalDetails?: string
+  additionalDocuments?: Array<{ label: string; url: string }>
+  // Credit Control specific
+  highestQualification?: string
+  fieldOfStudy?: string
+  experienceDescription?: string
+  debtCollected?: string
+  collectionStrategies?: string
+  financeSystems?: string
+  excelProficiency?: string
+  comfortableWithCalls?: string
+  willingToReport?: string
+  currentSalary?: string
+  expectedSalary?: string
+  availableImmediately?: string
+  earliestStartDate?: string
+  coverLetterLink?: string
+  credentialsLink?: string
+  confirmAccuracy?: boolean
+  understandContractTerms?: boolean
+  noConflictOfInterest?: boolean
 }
 
 export default function ApplicationDetailPage() {
@@ -98,12 +124,18 @@ export default function ApplicationDetailPage() {
     try {
       setIsLoading(true)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
-      const response = await fetch(`${apiUrl}/api/applications/${id}`, {
+      
+      // Determine which endpoint to use based on application ID prefix
+      const endpoint = id.startsWith('CCO-') 
+        ? `/api/credit-control-applications/${id}`
+        : `/api/applications/${id}`
+      
+      const response = await fetch(`${apiUrl}${endpoint}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-
+      
       if (!response.ok) throw new Error("Failed to fetch application")
 
       const data = await response.json()
@@ -122,7 +154,13 @@ export default function ApplicationDetailPage() {
     try {
       setIsSaving(true)
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.codewithseth.co.ke"
-      const response = await fetch(`${apiUrl}/api/applications/${id}`, {
+      
+      // Determine which endpoint to use based on application ID prefix
+      const endpoint = id.startsWith('CCO-') 
+        ? `/api/credit-control-applications/${id}`
+        : `/api/applications/${id}`
+      
+      const response = await fetch(`${apiUrl}${endpoint}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -209,6 +247,12 @@ export default function ApplicationDetailPage() {
     )
   }
 
+  // Detect application type based on ID prefix or available fields
+  const isCreditControl = application.applicationId.startsWith('CCO-') || 
+    (!!application.highestQualification && !!application.debtCollected)
+  const isSalesSupervisor = application.applicationId.startsWith('APP-') || 
+    (!!application.strengths && !!application.leadershipStyle)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50">
       <AdminNav />
@@ -225,7 +269,11 @@ export default function ApplicationDetailPage() {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-2">{application.fullName}</h1>
-              <p className="text-muted-foreground font-mono text-sm">{application.applicationId}</p>
+              <p className="text-muted-foreground text-sm mb-1">
+                {application.jobTitle || (isCreditControl ? "Credit Control Officer" : "Technical Sales Supervisor")}
+                {application.department && ` • ${application.department}`}
+              </p>
+              <p className="text-muted-foreground font-mono text-xs">{application.applicationId}</p>
             </div>
             <Badge className={getStatusColor(application.status)} style={{ fontSize: "0.875rem", padding: "0.5rem 1rem" }}>
               {application.status}
@@ -270,232 +318,430 @@ export default function ApplicationDetailPage() {
                     <p className="text-sm">{application.location}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm font-medium">Eligible to Work in Kenya</p>
-                    <p className="text-sm">{application.eligibleToWork === "yes" ? "✅ Yes" : "❌ No"}</p>
+                {application.eligibleToWork && (
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">Eligible to Work in Kenya</p>
+                      <p className="text-sm">{application.eligibleToWork === "yes" ? "✅ Yes" : "❌ No"}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm font-medium">Available to Start</p>
-                    <p className="text-sm">{application.availableStart || "Not specified"}</p>
+                )}
+                {application.availableStart && (
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">Available to Start</p>
+                      <p className="text-sm">{application.availableStart}</p>
+                    </div>
                   </div>
-                </div>
+                )}
+                {application.availableImmediately && (
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">Available Immediately</p>
+                      <p className="text-sm">{application.availableImmediately === "yes" ? "✅ Yes" : `❌ No - Start Date: ${application.earliestStartDate || "Not specified"}`}</p>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
-            {/* Experience & Background */}
+            {/* Education & Experience - Dynamic based on job type */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <GraduationCap className="h-5 w-5" />
-                  Experience & Background
+                  Education & Experience
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-semibold">Education</Label>
-                  <p className="text-sm mt-1">
-                    {application.hasDegree === "yes" ? "✅ Has Degree" : "❌ No Degree"}
-                  </p>
-                  {application.degreeDetails && (
-                    <p className="text-sm text-muted-foreground mt-2">{application.degreeDetails}</p>
-                  )}
-                </div>
+                {/* Credit Control - Qualification */}
+                {isCreditControl && application.highestQualification && (
+                  <>
+                    <div>
+                      <Label className="font-semibold">Highest Qualification</Label>
+                      <p className="text-sm mt-1 capitalize">
+                        {application.highestQualification.replace("-", " ")}
+                        {application.fieldOfStudy && ` - ${application.fieldOfStudy}`}
+                      </p>
+                    </div>
+                    <Separator />
+                  </>
+                )}
 
-                <Separator />
+                {/* Sales Supervisor - Degree */}
+                {isSalesSupervisor && application.hasDegree && (
+                  <>
+                    <div>
+                      <Label className="font-semibold">Education</Label>
+                      <p className="text-sm mt-1">
+                        {application.hasDegree === "yes" ? "✅ Has Degree" : "❌ No Degree"}
+                      </p>
+                      {application.degreeDetails && (
+                        <p className="text-sm text-muted-foreground mt-2">{application.degreeDetails}</p>
+                      )}
+                    </div>
+                    <Separator />
+                  </>
+                )}
 
+                {/* Years of Experience - Common */}
                 <div>
                   <Label className="font-semibold">Years of Experience</Label>
                   <p className="text-sm mt-1 capitalize">{application.yearsExperience?.replace("-", " to ") || "Not specified"}</p>
                 </div>
 
-                <Separator />
+                {/* Credit Control - Experience Description */}
+                {isCreditControl && application.experienceDescription && (
+                  <>
+                    <Separator />
+                    <div>
+                      <Label className="font-semibold">Experience Description</Label>
+                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.experienceDescription}</p>
+                    </div>
+                  </>
+                )}
 
-                <div>
-                  <Label className="font-semibold">Leadership Experience</Label>
-                  <p className="text-sm mt-1">
-                    {application.hasSupervised === "yes" ? "✅ Has supervised teams" : "❌ No supervisory experience"}
-                  </p>
-                  {application.leadershipDescription && (
-                    <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.leadershipDescription}</p>
+                {/* Sales Supervisor - Leadership */}
+                {isSalesSupervisor && (
+                  <>
+                    {application.hasSupervised && (
+                      <>
+                        <Separator />
+                        <div>
+                          <Label className="font-semibold">Leadership Experience</Label>
+                          <p className="text-sm mt-1">
+                            {application.hasSupervised === "yes" ? "✅ Has supervised teams" : "❌ No supervisory experience"}
+                          </p>
+                          {application.leadershipDescription && (
+                            <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.leadershipDescription}</p>
+                          )}
+                        </div>
+                      </>
+                    )}
+
+                    {application.equipmentExperience && (
+                      <>
+                        <Separator />
+                        <div>
+                          <Label className="font-semibold">Equipment Experience</Label>
+                          <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.equipmentExperience}</p>
+                        </div>
+                      </>
+                    )}
+
+                    {application.majorSaleDescription && (
+                      <>
+                        <Separator />
+                        <div>
+                          <Label className="font-semibold">Major Sale Achievement</Label>
+                          <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.majorSaleDescription}</p>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Credit Control Competence - Only for Credit Control */}
+            {isCreditControl && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    Credit Control Competence
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {application.debtCollected && (
+                    <div>
+                      <Label className="font-semibold">Debt Collection Experience</Label>
+                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.debtCollected}</p>
+                    </div>
                   )}
-                </div>
 
-                {application.equipmentExperience && (
-                  <>
-                    <Separator />
-                    <div>
-                      <Label className="font-semibold">Equipment Experience</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.equipmentExperience}</p>
-                    </div>
-                  </>
-                )}
-
-                {application.majorSaleDescription && (
-                  <>
-                    <Separator />
-                    <div>
-                      <Label className="font-semibold">Major Sale Achievement</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.majorSaleDescription}</p>
-                    </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Skills & Competencies */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5" />
-                  Skills & Competencies
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-semibold">Key Strengths</Label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {application.strengths.map((strength, index) => (
-                      <Badge key={index} variant="secondary">
-                        {strength}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <Label className="font-semibold">CRM Proficiency</Label>
-                  <p className="text-sm mt-1">
-                    {application.crmProficiency}/5 - {parseInt(application.crmProficiency) >= 4 ? "Expert" : parseInt(application.crmProficiency) >= 3 ? "Intermediate" : "Beginner"}
-                  </p>
-                </div>
-
-                {application.trainingExample && (
-                  <>
-                    <Separator />
-                    <div>
-                      <Label className="font-semibold">Training/Mentoring Experience</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.trainingExample}</p>
-                    </div>
-                  </>
-                )}
-
-                {application.motivation && (
-                  <>
-                    <Separator />
-                    <div>
-                      <Label className="font-semibold">Motivation for Biomedical Sales</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.motivation}</p>
-                    </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Results & Leadership */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Results & Leadership
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="font-semibold">Sales Target Experience</Label>
-                  <p className="text-sm mt-1">
-                    {application.hadSalesTarget === "yes" ? "✅ Has worked with sales targets" : "❌ No sales target experience"}
-                  </p>
-                  {application.targetPerformance && (
-                    <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.targetPerformance}</p>
+                  {application.collectionStrategies && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Collection Strategies</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.collectionStrategies}</p>
+                      </div>
+                    </>
                   )}
-                </div>
 
-                {application.teamMotivation && (
-                  <>
-                    <Separator />
+                  {application.financeSystems && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Finance Systems Experience</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.financeSystems}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.excelProficiency && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Excel Proficiency</Label>
+                        <p className="text-sm mt-1">
+                          {application.excelProficiency}/5 - {parseInt(application.excelProficiency) >= 4 ? "Expert" : parseInt(application.excelProficiency) >= 3 ? "Intermediate" : "Beginner"}
+                        </p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.comfortableWithCalls && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Comfortable with Phone Calls</Label>
+                        <p className="text-sm mt-1">{application.comfortableWithCalls === "yes" ? "✅ Yes" : "❌ No"}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.willingToReport && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Willing to Report Weekly</Label>
+                        <p className="text-sm mt-1">{application.willingToReport === "yes" ? "✅ Yes" : "❌ No"}</p>
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Skills & Competencies - Only for Sales Supervisor */}
+            {isSalesSupervisor && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    Skills & Competencies
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {application.strengths && application.strengths.length > 0 && (
                     <div>
-                      <Label className="font-semibold">Team Motivation Approach</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.teamMotivation}</p>
+                      <Label className="font-semibold">Key Strengths</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {application.strengths.map((strength, index) => (
+                          <Badge key={index} variant="secondary">
+                            {strength}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </>
-                )}
+                  )}
 
-                {application.leadershipStyle && (
-                  <>
-                    <Separator />
+                  {application.crmProficiency && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">CRM Proficiency</Label>
+                        <p className="text-sm mt-1">
+                          {application.crmProficiency}/5 - {parseInt(application.crmProficiency) >= 4 ? "Expert" : parseInt(application.crmProficiency) >= 3 ? "Intermediate" : "Beginner"}
+                        </p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.trainingExample && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Training Experience</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.trainingExample}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.motivation && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Motivation</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.motivation}</p>
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Results & Leadership - Only for Sales Supervisor */}
+            {isSalesSupervisor && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5" />
+                    Results & Leadership
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {application.hadSalesTarget && (
                     <div>
-                      <Label className="font-semibold">Leadership Style</Label>
-                      <p className="text-sm mt-1">{application.leadershipStyle}</p>
+                      <Label className="font-semibold">Sales Target Experience</Label>
+                      <p className="text-sm mt-1">
+                        {application.hadSalesTarget === "yes" ? "✅ Yes" : "❌ No"}
+                      </p>
+                      {application.targetPerformance && (
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.targetPerformance}</p>
+                      )}
                     </div>
-                  </>
-                )}
+                  )}
 
-                {application.challenges && (
-                  <>
-                    <Separator />
+                  {application.teamMotivation && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Team Motivation</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.teamMotivation}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.leadershipStyle && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Leadership Style</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.leadershipStyle}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {application.challenges && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Handling Challenges</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.challenges}</p>
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Culture & Fit - Only for Sales Supervisor */}
+            {isSalesSupervisor && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Culture & Fit
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {application.difficultClients && (
                     <div>
-                      <Label className="font-semibold">Industry Challenges Insight</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.challenges}</p>
+                      <Label className="font-semibold">Handling Difficult Clients</Label>
+                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.difficultClients}</p>
                     </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
+                  )}
 
-            {/* Culture & Fit */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Culture & Fit
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {application.difficultClients && (
-                  <div>
-                    <Label className="font-semibold">Handling Difficult Clients</Label>
-                    <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.difficultClients}</p>
-                  </div>
-                )}
+                  {application.crossDepartment && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Cross-Department Collaboration</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.crossDepartment}</p>
+                      </div>
+                    </>
+                  )}
 
-                {application.crossDepartment && (
-                  <>
-                    <Separator />
+                  {application.whyJoin && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Why Join Accord Medical</Label>
+                        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.whyJoin}</p>
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Compensation - Only for Credit Control */}
+            {isCreditControl && (application.currentSalary || application.expectedSalary) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5" />
+                    Compensation Expectations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {application.currentSalary && (
                     <div>
-                      <Label className="font-semibold">Cross-Departmental Collaboration</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.crossDepartment}</p>
+                      <Label className="font-semibold">Current Salary</Label>
+                      <p className="text-sm mt-1">KSh {application.currentSalary}</p>
                     </div>
-                  </>
-                )}
+                  )}
 
-                {application.whyJoin && (
-                  <>
-                    <Separator />
-                    <div>
-                      <Label className="font-semibold">Why Join Accord Medical</Label>
-                      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">{application.whyJoin}</p>
+                  {application.expectedSalary && (
+                    <>
+                      <Separator />
+                      <div>
+                        <Label className="font-semibold">Expected Salary</Label>
+                        <p className="text-sm mt-1">KSh {application.expectedSalary}</p>
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Declarations - Only for Credit Control */}
+            {isCreditControl && (application.confirmAccuracy !== undefined || application.understandContractTerms !== undefined || application.noConflictOfInterest !== undefined) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Declarations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {application.confirmAccuracy !== undefined && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className={`h-4 w-4 ${application.confirmAccuracy ? "text-green-600" : "text-red-600"}`} />
+                      <p className="text-sm">Information accuracy confirmed</p>
                     </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
+                  )}
+                  {application.understandContractTerms !== undefined && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className={`h-4 w-4 ${application.understandContractTerms ? "text-green-600" : "text-red-600"}`} />
+                      <p className="text-sm">Contract terms understood</p>
+                    </div>
+                  )}
+                  {application.noConflictOfInterest !== undefined && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className={`h-4 w-4 ${application.noConflictOfInterest ? "text-green-600" : "text-red-600"}`} />
+                      <p className="text-sm">No conflict of interest</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
-            {/* Documents */}
+            {/* Attachments */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5" />
-                  Documents & Attachments
+                  Attachments
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 <div>
                   <Label className="font-semibold">CV/Resume</Label>
                   <a
@@ -509,6 +755,44 @@ export default function ApplicationDetailPage() {
                     <ExternalLink className="h-3 w-3" />
                   </a>
                 </div>
+
+                {application.coverLetterLink && (
+                  <>
+                    <Separator />
+                    <div>
+                      <Label className="font-semibold">Cover Letter</Label>
+                      <a
+                        href={application.coverLetterLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-blue-600 hover:underline mt-1"
+                      >
+                        <FileText className="h-4 w-4" />
+                        View Cover Letter
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                  </>
+                )}
+
+                {application.credentialsLink && (
+                  <>
+                    <Separator />
+                    <div>
+                      <Label className="font-semibold">Academic Credentials</Label>
+                      <a
+                        href={application.credentialsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-blue-600 hover:underline mt-1"
+                      >
+                        <FileText className="h-4 w-4" />
+                        View Credentials
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                  </>
+                )}
 
                 {application.achievementsLink && (
                   <>
@@ -530,6 +814,7 @@ export default function ApplicationDetailPage() {
                 )}
 
                 {application.additionalDocuments &&
+                  Array.isArray(application.additionalDocuments) &&
                   application.additionalDocuments.filter((doc) => doc.label && doc.url).length > 0 && (
                     <>
                       <Separator />
@@ -615,9 +900,9 @@ export default function ApplicationDetailPage() {
                   <Label htmlFor="notes">Internal Notes</Label>
                   <Textarea
                     id="notes"
+                    placeholder="Add internal notes..."
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Add notes about this application..."
                     rows={4}
                   />
                 </div>
@@ -626,33 +911,6 @@ export default function ApplicationDetailPage() {
                   <Save className="mr-2 h-4 w-4" />
                   {isSaving ? "Saving..." : "Save Changes"}
                 </Button>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <a href={`mailto:${application.email}`} className="block">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Mail className="mr-2 h-4 w-4" />
-                    Send Email
-                  </Button>
-                </a>
-                <a href={`tel:${application.phone}`} className="block">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Phone className="mr-2 h-4 w-4" />
-                    Call Applicant
-                  </Button>
-                </a>
-                <a href={application.cvLink} target="_blank" rel="noopener noreferrer" className="block">
-                  <Button variant="outline" className="w-full justify-start">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Download CV
-                  </Button>
-                </a>
               </CardContent>
             </Card>
           </div>
