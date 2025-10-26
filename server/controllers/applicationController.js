@@ -116,7 +116,8 @@ exports.getApplicationById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const application = await Application.findById(id);
+    // Find by applicationId (APP-xxx) instead of MongoDB _id
+    const application = await Application.findOne({ applicationId: id });
 
     if (!application) {
       return res.status(404).json({
@@ -144,8 +145,9 @@ exports.updateApplicationStatus = async (req, res) => {
     const { id } = req.params;
     const { status, notes } = req.body;
 
-    const application = await Application.findByIdAndUpdate(
-      id,
+    // Find by applicationId (APP-xxx) instead of MongoDB _id
+    const application = await Application.findOneAndUpdate(
+      { applicationId: id },
       {
         status,
         notes,
@@ -181,7 +183,8 @@ exports.deleteApplication = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const application = await Application.findByIdAndDelete(id);
+    // Find by applicationId (APP-xxx) instead of MongoDB _id
+    const application = await Application.findOneAndDelete({ applicationId: id });
 
     if (!application) {
       return res.status(404).json({
