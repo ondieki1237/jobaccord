@@ -10,6 +10,7 @@ const applicationRoutes = require('./routes/applicationRoutes');
 const authRoutes = require('./routes/authRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const creditControlApplicationRoutes = require('./routes/creditControlApplicationRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/credit-control-applications', creditControlApplicationRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

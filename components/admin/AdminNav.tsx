@@ -5,7 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { Button } from "@/components/ui/button"
-import { LayoutDashboard, FileText, LogOut, User } from "lucide-react"
+import { LayoutDashboard, FileText, LogOut, User, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export default function AdminNav() {
@@ -22,6 +22,11 @@ export default function AdminNav() {
       href: "/admin/applications",
       label: "Applications",
       icon: FileText,
+    },
+    {
+      href: "/admin/ai-assistant",
+      label: "AI Assistant",
+      icon: Sparkles,
     },
   ]
 
