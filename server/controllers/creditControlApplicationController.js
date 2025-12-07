@@ -139,8 +139,13 @@ exports.getCreditControlApplicationById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find by applicationId (CCO-xxx) instead of MongoDB _id
-    const application = await CreditControlApplication.findOne({ applicationId: id });
+    // Try finding by applicationId first (CCO-xxx format)
+    let application = await CreditControlApplication.findOne({ applicationId: id });
+
+    // If not found, try MongoDB _id (for backward compatibility with old applications)
+    if (!application && id.match(/^[0-9a-fA-F]{24}$/)) {
+      application = await CreditControlApplication.findById(id);
+    }
 
     if (!application) {
       return res.status(404).json({
@@ -168,17 +173,28 @@ exports.updateCreditControlApplicationStatus = async (req, res) => {
     const { id } = req.params;
     const { status, notes } = req.body;
 
-    // Find by applicationId (CCO-xxx) instead of MongoDB _id
-    const application = await CreditControlApplication.findOneAndUpdate(
+    const updateData = {
+      status,
+      notes,
+      reviewedAt: new Date(),
+      reviewedBy: req.admin?._id,
+    };
+
+    // Try finding by applicationId first (CCO-xxx format)
+    let application = await CreditControlApplication.findOneAndUpdate(
       { applicationId: id },
-      {
-        status,
-        notes,
-        reviewedAt: new Date(),
-        reviewedBy: req.admin?._id,
-      },
+      updateData,
       { new: true, runValidators: true }
     );
+
+    // If not found, try MongoDB _id (for backward compatibility with old applications)
+    if (!application && id.match(/^[0-9a-fA-F]{24}$/)) {
+      application = await CreditControlApplication.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+    }
 
     if (!application) {
       return res.status(404).json({
@@ -206,8 +222,13 @@ exports.deleteCreditControlApplication = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find by applicationId (CCO-xxx) instead of MongoDB _id
-    const application = await CreditControlApplication.findOneAndDelete({ applicationId: id });
+    // Try finding by applicationId first (CCO-xxx format)
+    let application = await CreditControlApplication.findOneAndDelete({ applicationId: id });
+
+    // If not found, try MongoDB _id (for backward compatibility with old applications)
+    if (!application && id.match(/^[0-9a-fA-F]{24}$/)) {
+      application = await CreditControlApplication.findByIdAndDelete(id);
+    }
 
     if (!application) {
       return res.status(404).json({

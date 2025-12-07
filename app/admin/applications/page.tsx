@@ -317,7 +317,7 @@ export default function ApplicationsListPage() {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <Link href={`/admin/applications/${app.applicationId}`}>
+                            <Link href={`/admin/applications/${app.applicationId || app._id}`}>
                               <Button size="sm" variant="outline">
                                 <Eye className="h-4 w-4 mr-1" />
                                 View
@@ -363,7 +363,7 @@ export default function ApplicationsListPage() {
                           </div>
                         </div>
 
-                        <Link href={`/admin/applications/${app.applicationId}`}>
+                        <Link href={`/admin/applications/${app.applicationId || app._id}`}>
                           <Button size="sm" className="w-full">
                             <Eye className="h-4 w-4 mr-2" />
                             View Details
